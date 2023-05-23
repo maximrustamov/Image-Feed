@@ -41,12 +41,22 @@ final class ProfileViewController: UIViewController {
         view.addSubview(labelSocial)
         labelSocial.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         labelSocial.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8).isActive = true
-        labelSocial.textColor = .gray
+        labelSocial.textColor = UIColor(named: "YP Grey")
         labelSocial.font = UIFont.systemFont(ofSize: 13.0, weight: .regular)
         self.label = labelName
         
+        let labelText = UILabel()
+        labelText.text = "Hello, world!"
+        labelText.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(labelText)
+        labelText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        labelText.topAnchor.constraint(equalTo: labelSocial.bottomAnchor, constant: 8).isActive = true
+        labelText.textColor = .white
+        labelText.font = UIFont.systemFont(ofSize: 13.0, weight: .regular)
+        self.label = labelText
         
         
+        let buttonView = UIView()
         let button = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .semibold))!,
             target: self,
@@ -54,14 +64,20 @@ final class ProfileViewController: UIViewController {
         )
         
         button.tintColor = UIColor(named: "YP Red")
+        
         button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24).isActive = true
-        button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
-        button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        buttonView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(buttonView)
+        buttonView.addSubview(button)
         
-       
+        buttonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        buttonView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        buttonView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        buttonView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        button.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 16).isActive = true
+        button.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor).isActive = true
     }
     
     @objc func didTapButton() {
