@@ -24,6 +24,12 @@ final class ProfileImageService {
     static let shared = ProfileImageService()
     private (set) var avatarURL: String?
     private var task: URLSessionTask?
+    
+    func clean() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
+    }
 }
 
 extension ProfileImageService {
