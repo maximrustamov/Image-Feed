@@ -1,6 +1,7 @@
 
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     private var label: UILabel?
@@ -129,8 +130,52 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapButton() {
-        OAuth2TokenStorage().token = nil
+        showAlert()
     }
+    
+    private func logout() {
+        OAuth2TokenStorage().token = nil
+        ProfileViewController.clean()
+        cleanServicesData()
+        switchToSplashViewController()
+    }
+    
+    static func clean() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+    
+    private func cleanServicesData() {
+        ImagesListService.shared.clean()
+        ProfileService.shared.clean()
+        ProfileImageService.shared.clean()
+    }
+    
+    private func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+        window.rootViewController = SplashViewController()
+    }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
+            guard let self = self else { return }
+            self.logout()
+        }))
+        alertController.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 
