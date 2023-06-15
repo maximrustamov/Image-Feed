@@ -1,6 +1,13 @@
 import UIKit
+import Kingfisher
 
-class ImagesListViewController: UIViewController {
+
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? { get set }
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+    var presenter: ImagesListViewPresenterProtocol?
     @IBOutlet private var tableView: UITableView!
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -42,6 +49,11 @@ class ImagesListViewController: UIViewController {
                 tableView.insertRows(at: indexPath, with: .automatic)
             } completion: { _ in }
         }
+    }
+    
+    func configure(_ presenter: ImagesListViewPresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
